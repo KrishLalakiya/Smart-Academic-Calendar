@@ -11,9 +11,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 900,
     rollupOptions: {
       output: {
-        manualChunks: {
-          firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore'],
-          calendar: ['react-big-calendar', 'moment'],
+        manualChunks(id) {
+          if (id.includes('node_modules/firebase') || id.includes('node_modules/@firebase')) {
+            return 'firebase'
+          }
+          if (id.includes('node_modules/react-big-calendar') || id.includes('node_modules/moment')) {
+            return 'calendar'
+          }
         },
       },
     },
