@@ -10,12 +10,14 @@ const Login = lazy(() => import('./pages/Login.jsx'))
 const Signup = lazy(() => import('./pages/Signup.jsx'))
 const Dashboard = lazy(() => import('./pages/Dashboard.jsx'))
 const AdminPanel = lazy(() => import('./pages/AdminPanel.jsx'))
+const Landing = lazy(() => import('./pages/Landing.jsx'))
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 
 export default function App() {
   return (
     <Suspense fallback={<Spinner label="Loading…" />}>
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -27,7 +29,6 @@ export default function App() {
               </CalendarProvider>
             }
           >
-            <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route
               path="/admin"

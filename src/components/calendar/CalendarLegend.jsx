@@ -17,10 +17,17 @@ export default function CalendarLegend() {
         Legend
       </span>
       {legendItems.map((item) => (
-        <div key={item.label} className="flex items-center gap-1.5">
+        <div 
+          key={item.label} 
+          className="flex items-center gap-1.5"
+          title={item.label === 'AI Generated' ? 'AI automatically resolves scheduling conflicts and generates optimized timetables for your cohorts.' : undefined}
+        >
           <div className={`h-2.5 w-2.5 rounded-full ${item.color} shadow-sm`} />
           <span className="text-[11px] font-medium text-slate-600 dark:text-notion-muted">
             {item.icon} {item.label}
+            {item.label === 'AI Generated' && (
+              <span className="ml-1 cursor-help opacity-60 text-[10px]">ℹ️</span>
+            )}
           </span>
         </div>
       ))}

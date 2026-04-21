@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Button from '../ui/Button.jsx'
+import { ALL_BATCHES, getGroupsForBatch } from '../../utils/batchConfig.js'
 
 const EVENT_TYPES = [
   { value: 'lecture', label: '📚 Lecture' },
@@ -32,6 +33,7 @@ export default function EventModal({
   const [endTime, setEndTime] = useState(initial?.raw?.endTime || initial?.endTime || '10:00')
   const [description, setDescription] = useState(initial?.raw?.description || initial?.description || '')
   const [type, setType] = useState(initial?.raw?.type || initial?.type || 'lecture')
+  const [color, setColor] = useState(initial?.raw?.color || initial?.color || '')
   
   // New Fields for College Events
   const [batch, setBatch] = useState(initial?.raw?.batch || initial?.batch || '2029')
@@ -62,6 +64,7 @@ export default function EventModal({
       startTime,
       endTime,
       description: description.trim(),
+      color,
     }
 
     if (mode === 'college') {
@@ -151,18 +154,26 @@ export default function EventModal({
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-slate-600 dark:text-notion-muted">Batch</label>
-                  <select className="input" value={batch} onChange={(e) => setBatch(e.target.value)}>
-                    <option value="2029">2029</option>
-                    <option value="2030">2030</option>
+                  <select className="input" value={batch} onChange={(e) => {
+                    const newBatch = e.target.value
+                    setBatch(newBatch)
+                    const newGroups = getGroupsForBatch(newBatch)
+                    if (group !== 'All' && !newGroups.includes(group)) {
+                      setGroup('All')
+                    }
+                  }}>
+                    {ALL_BATCHES.map((b) => (
+                      <option key={b} value={b}>{b}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-semibold text-slate-600 dark:text-notion-muted">Group</label>
                   <select className="input" value={group} onChange={(e) => setGroup(e.target.value)}>
                     <option value="All">All Groups</option>
-                    <option value="A">Group A</option>
-                    <option value="B">Group B</option>
-                    <option value="C">Group C</option>
+                    {getGroupsForBatch(batch).map((g) => (
+                      <option key={g} value={g}>Group {g}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -221,6 +232,54 @@ export default function EventModal({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Optional notes…"
             />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-semibold text-slate-600 dark:text-notion-muted">
+              Event Color
+            </label>
+            <div className="flex items-center gap-3">
+              {[
+                { hex: '#6366f1', label: 'Indigo' },
+                { hex: '#f43f5e', label: 'Rose' },
+                { hex: '#10b981', label: 'Emerald' },
+                { hex: '#f59e0b', label: 'Amber' },
+                { hex: '#8b5cf6', label: 'Violet' },
+              ].map((c) => (
+                <button
+                  key={c.hex}
+                  type="button"
+                  onClick={() => setColor(c.hex)}
+                  title={c.label}
+                  className={`w-6 h-6 rounded-full border-2 transition-transform ${
+                    color === c.hex ? 'border-current scale-110 shadow-sm' : 'border-transparent hover:scale-110'
+                  }`}
+                  style={{ backgroundColor: c.hex, color: c.hex }}
+                />
+              ))}
+              <div className="w-px h-6 bg-slate-200 dark:bg-notion-border mx-1" />
+              <div className="relative group flex items-center">
+                <input
+                  type="color"
+                  value={color || '#2563eb'}
+                  onChange={(e) => setColor(e.target.value)}
+                  className="w-8 h-8 p-0 border-0 cursor-pointer rounded overflow-hidden bg-transparent"
+                  title="Custom Color"
+                />
+                {!color && (
+                  <span className="ml-2 text-xs text-slate-400 italic">Default</span>
+                )}
+              </div>
+              {color && (
+                <button
+                  type="button"
+                  onClick={() => setColor('')}
+                  className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 ml-auto"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
           </div>
 
           {error && (

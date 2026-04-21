@@ -53,6 +53,7 @@ export async function createStudentEvent(event) {
     startTime: event.startTime || null,
     endTime: event.endTime || null,
     description: event.description || '',
+    color: event.color || null,
     isAiGenerated: event.isAiGenerated || false,
     createdAt: serverTimestamp(),
   }
@@ -97,6 +98,7 @@ export async function batchCreateStudentEvents(events) {
       startTime: ev.startTime || null,
       endTime: ev.endTime || null,
       description: ev.description || '',
+      color: ev.color || null,
       isAiGenerated: ev.isAiGenerated || false,
       createdAt: serverTimestamp(),
     })

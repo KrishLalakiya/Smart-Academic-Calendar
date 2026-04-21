@@ -24,15 +24,34 @@ export default {
           700: '#1d4ed8',
         },
         notion: {
-          bg: '#191919',
-          sidebar: '#202020',
-          border: '#2f2f2f',
-          text: '#d4d4d4',
-          muted: '#808080',
-          hover: '#2c2c2c',
-          active: '#333333',
-          blue: '#2383e2',
-        }
+          bg: '#0f0f0f',
+          sidebar: '#161616',
+          border: '#232323',
+          text: '#e5e5e5',
+          muted: '#71717a',
+          hover: '#1e1e1e',
+          active: '#292929',
+          blue: '#60a5fa',
+        },
+        border: "hsl(var(--border))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
       keyframes: {
         shimmer: {

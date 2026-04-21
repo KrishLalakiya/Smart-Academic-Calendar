@@ -8,6 +8,7 @@ import {
   query,
   serverTimestamp,
   updateDoc,
+  writeBatch,
 } from 'firebase/firestore'
 import { db } from './firebase.js'
 
@@ -55,6 +56,7 @@ export async function createCollegeEvent(event) {
     subject: event.subject || '',
     classroom: event.classroom || '',
     faculty: event.faculty || '',
+    color: event.color || null,
     createdBy: event.createdBy,
     createdAt: serverTimestamp(),
   }
@@ -79,4 +81,15 @@ export async function updateCollegeEvent(id, patch) {
 export async function deleteCollegeEvent(id) {
   if (!db) throw new Error('Firebase not configured')
   await deleteDoc(doc(db, COLLECTION, id))
+}
+/**
+ * Delete multiple college events by their IDs.
+ */
+export async function deleteMultipleCollegeEvents(ids) {
+  if (!db) throw new Error('Firebase not configured')
+  const batch = writeBatch(db)
+  ids.forEach((id) => {
+    batch.delete(doc(db, COLLECTION, id))
+  })
+  await batch.commit()
 }

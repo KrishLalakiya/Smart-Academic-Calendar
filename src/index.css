@@ -5,6 +5,34 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --border: 240 5.9% 90%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+}
+
 @layer base {
   html,
   body,
@@ -13,10 +41,43 @@
   }
 
   body {
-    @apply bg-white text-slate-900 dark:bg-notion-bg dark:text-notion-text antialiased transition-colors duration-200;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    @apply antialiased transition-colors duration-200;
     font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     font-feature-settings: 'cv11', 'ss01';
   }
+}
+
+/* ============================================
+   Premium Slim Scrollbars
+   ============================================ */
+/* For Webkit: Chrome, Safari, Edge */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563; /* gray-600 */
+  border-radius: 10px;
+  border: 2px solid transparent; /* creates padding effect */
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; /* gray-500 */
+  background-clip: padding-box;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
 }
 
 @layer components {
@@ -24,7 +85,7 @@
     @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .dark .btn {
-    --tw-ring-offset-color: theme('colors.notion.bg');
+    --tw-ring-offset-color: #0f0f0f;
   }
 
   .btn-primary {
@@ -38,11 +99,11 @@
     @apply btn text-slate-700 hover:bg-slate-100 focus:ring-slate-300;
   }
   .dark .btn-ghost {
-    color: theme('colors.notion.muted');
+    color: #a1a1aa;
   }
   .dark .btn-ghost:hover {
-    background-color: theme('colors.notion.hover');
-    color: theme('colors.notion.text');
+    background-color: #1e1e1e;
+    color: #e5e5e5;
   }
 
   .btn-danger {
@@ -52,63 +113,89 @@
     @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors;
   }
   .dark .input {
-    background-color: theme('colors.notion.sidebar');
-    border-color: theme('colors.notion.border');
-    color: theme('colors.notion.text');
+    background-color: #1a1a1a;
+    border-color: #2a2a2a;
+    color: #e5e5e5;
   }
   .dark .input::placeholder {
-    color: theme('colors.notion.muted');
+    color: #6b6b6b;
   }
 
   .card {
     @apply rounded-xl border border-slate-200 bg-white shadow-sm;
   }
   .dark .card {
-    border-color: theme('colors.notion.border');
-    background-color: theme('colors.notion.sidebar');
+    border-color: #232323;
+    background-color: #161616;
   }
   .skeleton {
     background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 40%, #e2e8f0 80%);
     background-size: 800px 100%;
     @apply animate-shimmer rounded-md dark:opacity-20;
   }
+
+  /* Landing Page Specific Utilities */
+  .card-hover {
+    transition: all 0.2s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.02);
+  }
+  .dark .card-hover:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+  }
+  
+  .hero-gradient {
+    background: radial-gradient(circle at 30% 20%, rgba(200, 220, 255, 0.15), transparent 70%);
+  }
+  .dark .hero-gradient {
+    background: radial-gradient(circle at 30% 20%, rgba(80, 120, 200, 0.12), transparent 70%);
+  }
+  
+  .calendar-preview {
+    background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 2px, transparent 2px, transparent 8px);
+  }
+  .dark .calendar-preview {
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 8px);
+  }
 }
 
 @layer utilities {
   .dark .bg-white {
-    background-color: theme('colors.notion.sidebar') !important;
+    background-color: #161616 !important;
   }
   .dark .bg-slate-50,
   .dark .bg-slate-100 {
-    background-color: theme('colors.notion.bg') !important;
+    background-color: #0f0f0f !important;
   }
   .dark .border-slate-200,
   .dark .border-slate-300 {
-    border-color: theme('colors.notion.border') !important;
+    border-color: #232323 !important;
   }
   .dark .text-slate-900,
   .dark .text-slate-800,
   .dark .text-slate-700 {
-    color: theme('colors.notion.text') !important;
+    color: #e5e5e5 !important;
   }
   .dark .text-slate-600,
   .dark .text-slate-500,
   .dark .text-slate-400 {
-    color: theme('colors.notion.muted') !important;
+    color: #a1a1aa !important;
   }
   .dark .hover\:bg-slate-50:hover,
   .dark .hover\:bg-slate-100:hover {
-    background-color: theme('colors.notion.hover') !important;
+    background-color: #1e1e1e !important;
   }
   .dark .text-brand-600,
   .dark .text-brand-700 {
-    color: theme('colors.notion.blue') !important;
+    color: #60a5fa !important;
   }
   .dark .bg-brand-50 {
-    background-color: theme('colors.notion.active') !important;
+    background-color: #1e293b !important;
   }
   .dark .border-brand-500 {
-    border-color: theme('colors.notion.blue') !important;
+    border-color: #60a5fa !important;
   }
 }
 
@@ -130,12 +217,14 @@
 }
 
 .dark .calendar-wrapper .rbc-toolbar button {
-  @apply border-notion-border bg-notion-sidebar text-notion-muted;
+  background-color: #1a1a1a;
+  border-color: #2a2a2a;
+  color: #a1a1aa;
 }
 
 .dark .calendar-wrapper .rbc-toolbar button:hover {
-  background-color: theme('colors.notion.hover');
-  color: theme('colors.notion.text');
+  background-color: #252525;
+  color: #e5e5e5;
 }
 
 .calendar-wrapper .rbc-toolbar button.rbc-active {
@@ -151,17 +240,18 @@
 }
 
 .dark .calendar-wrapper .rbc-toolbar .rbc-toolbar-label {
-  color: theme('colors.notion.text');
+  color: #f5f5f5;
 }
 
 /* Headers */
 .calendar-wrapper .rbc-header {
-  @apply border-b border-slate-200 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider;
+  @apply border-b border-slate-200 py-4 text-base font-semibold text-slate-800 tracking-wide;
 }
 
 .dark .calendar-wrapper .rbc-header {
-  border-color: theme('colors.notion.border');
-  color: theme('colors.notion.muted');
+  border-color: #27272a;
+  color: #71717a;
+  background-color: #121212;
 }
 
 /* Time gutter */
@@ -169,21 +259,26 @@
   @apply border-b border-slate-100;
 }
 
+.dark .calendar-wrapper .rbc-time-gutter .rbc-timeslot-group {
+  border-color: #1e1e1e;
+}
+
 .calendar-wrapper .rbc-time-content > .rbc-time-gutter .rbc-label {
-  @apply text-[10px] text-slate-400 px-2;
+  @apply text-[11px] font-medium text-slate-700 px-2;
 }
 
 .dark .calendar-wrapper .rbc-time-content > .rbc-time-gutter .rbc-label {
-  color: theme('colors.notion.muted');
+  color: #71717a;
+  font-weight: 500;
 }
 
-/* Grid lines */
+/* Grid lines — subtle but visible in dark mode */
 .calendar-wrapper .rbc-time-content {
   @apply border-t border-slate-200;
 }
 
 .dark .calendar-wrapper .rbc-time-content {
-  border-color: theme('colors.notion.border');
+  border-color: #27272a;
 }
 
 .calendar-wrapper .rbc-timeslot-group {
@@ -191,20 +286,80 @@
 }
 
 .dark .calendar-wrapper .rbc-timeslot-group {
-  border-color: theme('colors.notion.border');
+  border-color: #1e1e1e;
 }
 
 .calendar-wrapper .rbc-day-slot .rbc-time-slot {
   border-top-color: transparent;
 }
 
-/* Day columns */
+.dark .calendar-wrapper .rbc-day-slot .rbc-time-slot {
+  border-top-color: #1a1a1a;
+}
+
+/* Day columns — vertical grid lines */
 .calendar-wrapper .rbc-day-bg + .rbc-day-bg {
   @apply border-l border-slate-200;
 }
 
 .dark .calendar-wrapper .rbc-day-bg + .rbc-day-bg {
-  border-color: theme('colors.notion.border');
+  border-color: #27272a;
+}
+
+/* Time column vertical borders */
+.dark .calendar-wrapper .rbc-time-header-content {
+  border-left-color: #27272a;
+}
+
+.dark .calendar-wrapper .rbc-time-content > * + * > * {
+  border-left-color: #27272a;
+}
+
+/* ============================================
+   Sticky header layout: constrain time-view height
+   so only the time grid scrolls, not the headers.
+   ============================================ */
+.calendar-wrapper .rbc-time-view {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 160px);
+  overflow: hidden;
+}
+
+.calendar-wrapper .rbc-time-header {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #ffffff;
+}
+
+.calendar-wrapper .rbc-time-content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Hide the empty all-day row gap below sticky headers */
+.calendar-wrapper .rbc-allday-cell {
+  display: none;
+}
+.calendar-wrapper .rbc-time-header-content > .rbc-row:first-child {
+  /* Collapse top border row that held the allday gutter */
+  min-height: 0;
+}
+
+/* Main calendar background in dark mode */
+.dark .calendar-wrapper .rbc-time-view {
+  background-color: #121212;
+  border-color: #27272a;
+}
+
+.dark .calendar-wrapper .rbc-time-header {
+  background-color: #121212;
+}
+
+.dark .calendar-wrapper .rbc-day-bg {
+  background-color: #121212;
 }
 
 /* Today highlight */
@@ -213,13 +368,14 @@
 }
 
 .dark .calendar-wrapper .rbc-today {
-  background-color: rgba(99, 102, 241, 0.05);
+  background-color: rgba(99, 102, 241, 0.06) !important;
 }
 
 /* Current time indicator */
 .calendar-wrapper .rbc-current-time-indicator {
   @apply bg-rose-500;
   height: 2px;
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.5);
 }
 
 /* Off-range dates */
@@ -228,7 +384,7 @@
 }
 
 .dark .calendar-wrapper .rbc-off-range-bg {
-  background-color: theme('colors.notion.bg');
+  background-color: #0f0f0f;
 }
 
 /* Month view cells */
@@ -237,7 +393,8 @@
 }
 
 .dark .calendar-wrapper .rbc-month-view {
-  border-color: theme('colors.notion.border');
+  border-color: #27272a;
+  background-color: #121212;
 }
 
 .calendar-wrapper .rbc-month-row + .rbc-month-row {
@@ -245,21 +402,112 @@
 }
 
 .dark .calendar-wrapper .rbc-month-row + .rbc-month-row {
-  border-color: theme('colors.notion.border');
+  border-color: #27272a;
 }
 
-/* Event rendering - override default rbc styles */
+.dark .calendar-wrapper .rbc-month-row {
+  background-color: #121212;
+}
+
+/* ============================================
+   Event rendering — Notion Calendar style
+   ============================================ */
+
 .calendar-wrapper .rbc-event {
-  @apply border-0 p-0 rounded-md;
-  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 3px !important;
+  margin: 0 1px !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .calendar-wrapper .rbc-event.rbc-selected {
-  @apply ring-2 ring-indigo-400 ring-offset-1;
+  @apply ring-2 ring-indigo-400/60 ring-offset-0;
+}
+
+.dark .calendar-wrapper .rbc-event.rbc-selected {
+  ring-color: rgba(129, 140, 248, 0.5);
 }
 
 .calendar-wrapper .rbc-event-label {
   display: none;
+}
+
+.calendar-wrapper .rbc-event-content {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Notion-style event block component */
+.notion-event-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  padding: 3px 8px;
+  background-color: var(--event-bg);
+  border-left: 4px solid var(--event-accent);
+  border-radius: 3px;
+  color: var(--event-text);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  overflow: hidden;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+.notion-event-block:hover {
+  filter: brightness(0.95);
+}
+
+.dark .notion-event-block {
+  /* Override to ensure bright, readable text in dark mode */
+  font-weight: 600;
+}
+
+.dark .notion-event-block:hover {
+  filter: brightness(1.2);
+}
+
+.notion-event-icon {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.notion-event-content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.notion-event-title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notion-event-meta {
+  margin-top: 1px;
+  font-size: 9px;
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+/* Month view: compact event rows */
+.calendar-wrapper .rbc-month-view .rbc-event {
+  margin: 1px 2px !important;
+}
+
+/* Week/Day time grid: events fill their column */
+.calendar-wrapper .rbc-time-view .rbc-event {
+  min-height: 20px;
 }
 
 /* Agenda view */
@@ -268,7 +516,7 @@
 }
 
 .dark .calendar-wrapper .rbc-agenda-view table.rbc-agenda-table {
-  border-color: theme('colors.notion.border');
+  border-color: #27272a;
 }
 
 .calendar-wrapper .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
@@ -276,9 +524,9 @@
 }
 
 .dark .calendar-wrapper .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
-  border-color: theme('colors.notion.border');
-  background-color: theme('colors.notion.bg');
-  color: theme('colors.notion.muted');
+  border-color: #27272a;
+  background-color: #121212;
+  color: #71717a;
 }
 
 .calendar-wrapper .rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
@@ -286,8 +534,8 @@
 }
 
 .dark .calendar-wrapper .rbc-agenda-view table.rbc-agenda-table tbody > tr > td {
-  border-color: theme('colors.notion.border');
-  color: theme('colors.notion.text');
+  border-color: #1e1e1e;
+  color: #e5e5e5;
 }
 
 /* Selection overlay */
@@ -296,7 +544,8 @@
 }
 
 .dark .calendar-wrapper .rbc-slot-selection {
-  @apply bg-indigo-800/30 border-indigo-700;
+  background-color: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 /* "show more" link in month view */
@@ -305,7 +554,14 @@
 }
 
 .dark .calendar-wrapper .rbc-show-more {
-  color: theme('colors.notion.blue');
+  color: #818cf8;
+}
+
+/* ============================================
+   Auto-scroll: smooth scrolling inside time grid
+   ============================================ */
+.calendar-wrapper .rbc-time-view > .rbc-time-content {
+  scroll-behavior: smooth;
 }
 
 /* Smooth entrance animation */

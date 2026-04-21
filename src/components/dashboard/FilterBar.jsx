@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth } from '../../hooks/useAuth'
+import { ALL_BATCHES, getGroupsForBatch } from '../../utils/batchConfig'
 
 export default function FilterBar({
   batch, setBatch,
@@ -7,27 +8,40 @@ export default function FilterBar({
   hideEnglishIII, setHideEnglishIII,
 }) {
   const { isAdmin } = useAuth()
-  
+
+  // Derive available groups from currently selected batch
+  const availableGroups = getGroupsForBatch(batch)
+
+  // When batch changes, reset group if current selection is no longer valid
+  function handleBatchChange(newBatch) {
+    setBatch(newBatch)
+    const newGroups = getGroupsForBatch(newBatch)
+    // If current group doesn't exist in the new batch, reset to first group (or 'All' for admin)
+    if (group !== 'All' && !newGroups.includes(group)) {
+      setGroup(isAdmin ? 'All' : newGroups[0])
+    }
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-4 rounded-xl border border-slate-200/60 bg-white/50 px-4 py-3 shadow-sm backdrop-blur-sm dark:border-notion-border dark:bg-notion-sidebar/50 mb-5">
       
-      {/* Batch Select (Admin sees full select, or it's view-only for student) */}
+      {/* Batch Select */}
       <div className="flex items-center gap-2">
         <label className="text-xs font-semibold text-slate-500 dark:text-notion-muted">Batch</label>
         <select
           value={batch}
-          onChange={(e) => setBatch(e.target.value)}
+          onChange={(e) => handleBatchChange(e.target.value)}
           className="rounded-md border-slate-200 bg-white py-1 pl-2 pr-8 text-xs font-medium text-slate-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-notion-border dark:bg-notion-bg dark:text-notion-text"
-          disabled={!isAdmin} // Students locked to default batch
         >
-          <option value="2029">2029</option>
-          <option value="2030">2030</option>
+          {ALL_BATCHES.map((b) => (
+            <option key={b} value={b}>{b}</option>
+          ))}
         </select>
       </div>
 
       <div className="h-4 w-px bg-slate-300 dark:bg-notion-border hidden sm:block"></div>
 
-      {/* Group Toggle */}
+      {/* Group Toggle (dependent on batch) */}
       <div className="flex items-center gap-2">
         <label className="text-xs font-semibold text-slate-500 dark:text-notion-muted">Group</label>
         <div className="flex rounded-lg border border-slate-200 bg-white p-0.5 shadow-sm dark:border-notion-border dark:bg-notion-bg">
@@ -43,7 +57,7 @@ export default function FilterBar({
               All
             </button>
           )}
-          {['A', 'B', 'C'].map((g) => (
+          {availableGroups.map((g) => (
             <button
               key={g}
               onClick={() => setGroup(g)}
@@ -61,7 +75,7 @@ export default function FilterBar({
 
       <div className="h-4 w-px bg-slate-300 dark:bg-notion-border hidden md:block"></div>
 
-      {/* English III Opt-in (Students only, or for everyone) */}
+      {/* English III Opt-in */}
       <label className="flex cursor-pointer items-center gap-2">
         <input
           type="checkbox"
